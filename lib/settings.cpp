@@ -46,8 +46,11 @@ std::string Settings::loadCppcheckCfg()
     static const std::string cfgFilename = "cppcheck.cfg";
     std::string fileName;
 #ifdef FILESDIR
-    if (Path::isFile(Path::join(FILESDIR, cfgFilename)))
-        fileName = Path::join(FILESDIR, cfgFilename);
+    const std::string filesdir = Path::getOptionalFilesDirPath(exename);
+    if (!filesdir.empty()) {
+        if (Path::isFile(Path::join(filesdir, cfgFilename)))
+            fileName = Path::join(filesdir, cfgFilename);
+    }
 #endif
     // cppcheck-suppress knownConditionTrueFalse
     if (fileName.empty()) {

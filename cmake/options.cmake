@@ -20,7 +20,7 @@ option(ANALYZE_DATAFLOW     "Clang dynamic analyzer: general dynamic dataflow an
 option(WARNINGS_ARE_ERRORS  "Treat warnings as errors"                                      OFF)
 
 set(USE_MATCHCOMPILER "Auto" CACHE STRING "Usage of match compiler")
-set_property(CACHE USE_MATCHCOMPILER PROPERTY STRINGS Auto Off On Verify) 
+set_property(CACHE USE_MATCHCOMPILER PROPERTY STRINGS Auto Off On Verify)
 if (USE_MATCHCOMPILER STREQUAL "Auto")
     if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(USE_MATCHCOMPILER_OPT "On")
@@ -77,5 +77,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 
-set(FILESDIR                       ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME} CACHE STRING "Cppcheck files directory")
+set(FILESDIR                       share/${PROJECT_NAME} CACHE STRING "Cppcheck files directory")
 
+if (IS_ABSOLUTE "${FILESDIR}")
+    set(FULL_FILESDIR "${FILESDIR}")
+else()
+    set(FULL_FILESDIR "${CMAKE_INSTALL_PREFIX}/${FILESDIR}")
+endif()
